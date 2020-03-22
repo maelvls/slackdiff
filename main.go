@@ -72,8 +72,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	group := sync.WaitGroup{}
+	chanNameToUsersMap := make(map[string][]slack.User, len(conversations))
 
+	group := sync.WaitGroup{}
 	for _, channel := range conversations {
 		ch := channel
 		group.Add(1)
@@ -85,11 +86,15 @@ func main() {
 				logutil.Errorf("can't fetch users for channel %s, got error: %v", ch.Name, err)
 				return
 			}
-			fmt.Printf("%s: %v\n", logutil.Yel(ch.Name), usersToNames(idsToUsers(users, userMap)))
+			chanNameToUsersMap[ch.Name] = idsToUsers(users, userMap)
 		}()
 	}
-
 	group.Wait()
+
+	for _, ch := range conversations {
+		users := chanNameToUsersMap[ch.Name]
+		fmt.Printf("%s: %v\n", logutil.Yel(ch.Name), usersToNames(users))
+	}
 
 	if err != nil {
 		logutil.Errorf("%v", err)
