@@ -20,7 +20,6 @@ var (
 	slackToken    = flag.String("token", "", `Slack OAuth token, create one at https://api.slack.com/apps. You can also pass it with SLACK_TOKEN. The --token has priority over SLACK_TOKEN.`)
 	onlyUsers     = flag.String("users", "", `Comma-separated list of users to select. By default, shows all users.`)
 	slackTokenEnv = envvar.Getenv("SLACK_TOKEN", "Slack OAuth token, see https://api.slack.com/apps.")
-	who           = flag.String("who", "", "")
 
 	showVersion = flag.Bool("version", false, "Watch out, returns 'n/a (commit none, built on unknown)' when built with 'go get'.")
 	// The 'version' var is set during build, using something like:
@@ -111,7 +110,10 @@ func main() {
 	}
 	group.Wait()
 
-	// printChannelsWithUsers(chans, chanNameToUsersMap)
+	if *onlyUsers == "" {
+		printChannelsWithUsers(chans, chanNameToUsersMap)
+		return
+	}
 
 	onlyList := strings.Split(*onlyUsers, ",")
 
