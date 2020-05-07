@@ -1,4 +1,4 @@
-module github.com/maelvls/slack-missing-chan
+module github.com/maelvls/slackdiff
 
 go 1.14
 

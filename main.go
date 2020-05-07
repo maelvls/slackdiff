@@ -10,8 +10,8 @@ import (
 	"github.com/fatih/color"
 	"github.com/jedib0t/go-pretty/table"
 	"github.com/jedib0t/go-pretty/text"
-	"github.com/maelvls/slack-missing-chan/pkg/envvar"
-	"github.com/maelvls/slack-missing-chan/pkg/logutil"
+	"github.com/maelvls/slackdiff/pkg/envvar"
+	"github.com/maelvls/slackdiff/pkg/logutil"
 	"github.com/mattn/go-isatty"
 	"github.com/slack-go/slack"
 )
