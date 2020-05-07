@@ -18,7 +18,7 @@ import (
 
 var (
 	slackToken    = flag.String("token", "", `Slack OAuth token, create one at https://api.slack.com/apps. You can also pass it with SLACK_TOKEN. The --token has priority over SLACK_TOKEN.`)
-	onlyUsers     = flag.String("users", "", `Comma-separated list of users to select. By default, shows all users.`)
+	onlyUsersStr  = flag.String("users", "", `Comma-separated list of users to select. By default, shows all users.`)
 	slackTokenEnv = envvar.Getenv("SLACK_TOKEN", "Slack OAuth token, see https://api.slack.com/apps.")
 
 	showVersion = flag.Bool("version", false, "Watch out, returns 'n/a (commit none, built on unknown)' when built with 'go get'.")
@@ -56,6 +56,8 @@ func main() {
 	if *slackToken != "" {
 		token = *slackToken
 	}
+
+	onlyUsers := strings.Split(*onlyUsersStr, ",")
 
 	api := slack.New(token)
 
@@ -110,14 +112,12 @@ func main() {
 	}
 	group.Wait()
 
-	if *onlyUsers == "" {
+	if *onlyUsersStr == "" {
 		printChannelsWithUsers(chans, chanNameToUsersMap)
 		return
 	}
 
-	onlyList := strings.Split(*onlyUsers, ",")
-
-	selected, err := selectNames(onlyList, users)
+	selected, err := selectNames(onlyUsers, users)
 	if err != nil {
 		logutil.Errorf("%v", err)
 		os.Exit(1)
