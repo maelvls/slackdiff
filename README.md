@@ -1,5 +1,8 @@
 # Slack Diff, know what channels you are missing on!
 
+> ⚠️ `slackdiff` will hit your rate limit in a few commands. That's because I do way
+> too many calls; at some point I plan on fixing this
+
 ## Install
 
 ```sh
